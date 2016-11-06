@@ -8,6 +8,17 @@ var {User} = require('./models/user');
 var app = express();
 app.use(bodyParser.json());
 
+// GET ALL TODOS
+
+app.get('/todos', (req, res) => {
+  Todo.find().then((todos) => {
+    res.send({todos});
+  }, (e) => {
+    res.status(400).send(e);
+  });
+});
+
+// CREATE NEW TODO
 app.post('/todos', (req, res) => {
   var todo = new Todo({
     text: req.body.text
