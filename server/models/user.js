@@ -51,7 +51,7 @@ UserSchema.pre('save', function (next) {
 UserSchema.methods.generateAuthToken = function () {
   var user = this;
   var access = 'auth';
-  var token = jwt.sign({_id: user._id.toHexString(), access}, 'SOME SECRET VALUE').toString();
+  var token = jwt.sign({_id: user._id.toHexString(), access}, process.env.JWT_SECRET).toString();
 
   user.tokens.push({access, token});
 
@@ -81,7 +81,7 @@ UserSchema.statics.findByToken = function (token) {
   var decoded;
 
   try {
-    decoded = jwt.verify(token, 'SOME SECRET VALUE');
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
   } catch (e) {
     // return new Promise((resolve, reject) => {
     //   reject();
